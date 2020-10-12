@@ -1,22 +1,31 @@
 var express = require("express");
 var router = express.Router();
 const Item = require("../models/Item");
+const Contact = require("../models/Contact");
 // const uploader = require("../config/cloudinary");
 
-router.post("/api/items", (req, res, next) => {
-  //   if (req.file) {
-  //     req.body.image = req.file.path;
-  //   }
-  // console.log(req.body);
-  // console.log(req.body.image);
-  Item.create(req.body)
-    .then((dbRes) => res.status(201).json(dbRes))
-    .catch(res.status(500).json(error));
+router.post("/api/items", async (req, res, next) => {
+  try {
+    const newItem = await Item.create(req.body);
+    const newItemId = newItem._id;
+    const reqBodyWithId = { ...req.body, item_id: newItemId };
+    const newContact = await Contact.create(reqBodyWithId);
+  } catch (error) {
+    next(error);
+  }
+  // .then((dbRes) => res.status(201).json(dbRes))
+  // .catch((error) => res.status(500).json(error));
+  // .then((dbRes) => res.status(201).json(dbRes))
+  // .catch((error) => res.status(500).json(error));
 });
 
 router.get("/api/items", (req, res, next) => {
+  console.log("I'M HERE");
   Item.find()
-    .then((dbRes) => res.status(200).json(dbRes.data))
+    .then((dbRes) => {
+      // console.log(dbRes);
+      res.status(200).json(dbRes);
+    })
     .catch((error) => res.status(500).json(error));
 });
 
