@@ -46,6 +46,6 @@ app.use("/", indexRouter);
 app.use("/api/auth", authRouter);
 app.use("/api/users", usersRouter);
 app.use("/", itemsRouter);
-app.use("/api/user", userRouter);
+// app.use("/api/user", userRouter);
 
 module.exports = app;
