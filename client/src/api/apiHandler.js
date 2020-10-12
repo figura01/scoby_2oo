@@ -44,9 +44,35 @@ export default {
       .catch(errorHandler);
   },
 
-  getItems() {
+  getItems(endPoint) {
     return service
-      .get("/api/items")
+      .get(endPoint)
+      .then((res) => res.data)
+      .catch(errorHandler);
+  },
+
+  getOneItem(endPoint) {
+    return service
+      .get(endPoint)
+      .then((res) => res.data)
+      .catch(errorHandler);
+  },
+
+  createItem(endPoint, data) {
+    return service
+      .post(endPoint, data)
+      .then((res) => res.data)
+      .catch(errorHandler);
+  },
+  updateItem(endPoint, data) {
+    return service
+      .patch(endPoint, data)
+      .then((res) => res.data)
+      .catch(errorHandler);
+  },
+  deleteItem(endPoint) {
+    return service
+      .delete(endPoint)
       .then((res) => res.data)
       .catch(errorHandler);
   },
