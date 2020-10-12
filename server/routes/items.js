@@ -3,7 +3,7 @@ var router = express.Router();
 const Item = require("../models/Item");
 // const uploader = require("../config/cloudinary");
 
-router.post("/api/items", async (req, res, next) => {
+router.post("/api/items", (req, res, next) => {
   //   if (req.file) {
   //     req.body.image = req.file.path;
   //   }

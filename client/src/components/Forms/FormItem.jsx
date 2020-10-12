@@ -1,18 +1,38 @@
 import React, { Component } from "react";
 import LocationAutoComplete from "../LocationAutoComplete";
 import "../../styles/form.css";
+import API from "../../api/apiHandler";
 
 class ItemForm extends Component {
-  state = {};
+  state = {
+      name: "",
+      description: "",
+      category: null,
+      quantity: 1,
+  contact: null,
+  image: "",
+  location: ""
+    };
+  
+ 
 
-  handleChange(event) {
+  handleChange = (event) => {
     console.log("Wax On Wax Off");
-    this.setState({});
+    const {name, value} = event.target;
+ console.log(name, value)
+
+    this.setState({
+      [name]: value
+    });
   }
 
   handleSubmit = (event) => {
     event.preventDefault();
     console.log("Wax On Wax Off");
+
+    // API.createOne("/api/items", this.state).then().catch(error => console.log(error))
+  
+
 
     // In order to send back the data to the client, since there is an input type file you have to send the
     // data as formdata.
@@ -27,12 +47,21 @@ class ItemForm extends Component {
     // Take a look at the data and see what you can get from it.
     // Look at the item model to know what you should retrieve and set as state.
     console.log(place);
+    this.setState({
+      location : {
+        coordinates: place.geometry.coordinates,
+        type: place.geometry.type,
+        formattedAddress: place.place_name
+      } 
+
+    })
   };
 
   render() {
+    console.log(this.state);
     return (
       <div className="ItemForm-container">
-        <form className="form" onChange={this.handleChange}>
+        <form className="form" onSubmit={this.handleSubmit}>
           <h2 className="title">Add Item</h2>
 
           <div className="form-group">
@@ -43,7 +72,10 @@ class ItemForm extends Component {
               id="name"
               className="input"
               type="text"
+              name="name"
+              // defaultValue={this.state.name}
               placeholder="What are you giving away ?"
+              onChange={this.handleChange}
             />
           </div>
 
@@ -52,7 +84,7 @@ class ItemForm extends Component {
               Category
             </label>
 
-            <select id="category" defaultValue="-1">
+            <select id="category" defaultValue="-1" name="category" onChange={this.handleChange}>
               <option value="-1" disabled>
                 Select a category
               </option>
@@ -67,14 +99,14 @@ class ItemForm extends Component {
             <label className="label" htmlFor="quantity">
               Quantity
             </label>
-            <input className="input" id="quantity" type="number" />
+            <input className="input" id="quantity" type="number" name="quantity" value={this.state.quantity} onChange={this.handleChange}/>
           </div>
 
           <div className="form-group">
             <label className="label" htmlFor="location">
               Address
             </label>
-            <LocationAutoComplete onSelect={this.handlePlace} />
+            <LocationAutoComplete onSelect={this.handlePlace} onChange={this.handleChange}/>
           </div>
 
           <div className="form-group">
@@ -84,7 +116,10 @@ class ItemForm extends Component {
             <textarea
               id="description"
               className="text-area"
+              name="description"
+              // value={this.state.description}
               placeholder="Tell us something about this item"
+              onChange={this.handleChange}
             ></textarea>
           </div>
 
@@ -92,7 +127,7 @@ class ItemForm extends Component {
             <label className="custom-upload label" htmlFor="image">
               Upload image
             </label>
-            <input className="input" id="image" type="file" />
+            <input className="input" id="image" name="image" type="file" onChange={this.handleChange}/>
           </div>
 
           <h2>Contact information</h2>
@@ -102,10 +137,10 @@ class ItemForm extends Component {
               How do you want to be reached?
             </label>
             <div>
-              <input type="radio" />
+              <input type="radio" name="contact" onChange={this.handleChange}/>
               user email
             </div>
-            <input type="radio" />
+            <input type="radio" name="contact" onChange={this.handleChange}/>
             contact phone number
           </div>
 

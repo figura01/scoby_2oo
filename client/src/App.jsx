@@ -1,3 +1,4 @@
+
 import React from "react";
 import { Switch, Route } from "react-router-dom";
 import NavMain from "./components/NavMain";
@@ -7,6 +8,7 @@ import Signup from "./pages/Signup";
 import ProtectedRoute from "./components/ProtectedRoute";
 import Profile from "./pages/Profile";
 import FormItem from "./components/Forms/FormItem";
+// import ReactMapboxGl, { Layer, Feature } from 'react-mapbox-gl';
 
 function App() {
   return (

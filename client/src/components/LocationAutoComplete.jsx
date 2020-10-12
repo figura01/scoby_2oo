@@ -1,3 +1,4 @@
+
 import React, { Component } from "react";
 import "../styles/LocationAutoComplete.css";
 import axios from "axios";
@@ -12,6 +13,7 @@ class LocationAutoComplete extends Component {
     };
     this.handleSearchChange = this.handleSearchChange.bind(this);
 
+
     if (!process.env.REACT_APP_MAPBOX_TOKEN) {
       throw new Error(
         "You don't have any 'process.env.REACT_APP_MAPBOX_API_KEY'"
@@ -20,6 +22,8 @@ class LocationAutoComplete extends Component {
   }
 
   handleSearchChange(e) {
+
+    console.log(process.env.REACT_APP_MAPBOX_TOKEN);
     this.setState({
       search: e.target.value,
       isLoading: true,
