@@ -2,8 +2,12 @@ import React, { Component } from "react";
 import LocationAutoComplete from "../LocationAutoComplete";
 import "../../styles/form.css";
 import API from "../../api/apiHandler";
+import {withUser} from "../Auth/withUser";
 
 class ItemForm extends Component {
+
+  
+  
   state = {
       name: "",
       description: "",
@@ -11,14 +15,21 @@ class ItemForm extends Component {
       quantity: 1,
   contact: null,
   image: "",
-  location: ""
+  location: "",
     };
   
  
 
   handleChange = (event) => {
     console.log("Wax On Wax Off");
-    const {name, value} = event.target;
+    const name = event.target.name;
+    const value = event.target.value;
+    // const value = event.target.type === "radio"
+    // ? event.target.checked
+    // : event.target.type === "file"
+    // ? event.target.files[0]
+    // : event.target.value; 
+
  console.log(name, value)
 
     this.setState({
@@ -29,10 +40,29 @@ class ItemForm extends Component {
   handleSubmit = (event) => {
     event.preventDefault();
     console.log("Wax On Wax Off");
+    const { authContext } = this.props;
+    console.log(authContext.user._id);
 
     // API.createOne("/api/items", this.state).then().catch(error => console.log(error))
-  
+    const newItem = {
+      name: this.state.name,
+      description: this.state.description,
+      image: "",
+      category: this.state.category,
+      quantity: this.state.quantity,
+      address: this.state.location.formattedAddress,
+      location: {
+        type: this.state.location.type,
+        coordinates: this.state.location.coordinates,
+        formattedAddress: this.state.location.formattedAddress,
+      },
+      id_user:  authContext.user._id,
+      contacted_by: this.state.contact
+    }
 
+   console.log(newItem);
+
+   API.createItem("/api/items", newItem).then(dbRes => console.log(dbRes)).catch(error => console.log(error))
 
     // In order to send back the data to the client, since there is an input type file you have to send the
     // data as formdata.
@@ -58,6 +88,7 @@ class ItemForm extends Component {
   };
 
   render() {
+    
     console.log(this.state);
     return (
       <div className="ItemForm-container">
@@ -137,10 +168,10 @@ class ItemForm extends Component {
               How do you want to be reached?
             </label>
             <div>
-              <input type="radio" name="contact" onChange={this.handleChange}/>
+              <input type="radio" name="contact" value="SMS" onChange={this.handleChange}/>
               user email
             </div>
-            <input type="radio" name="contact" onChange={this.handleChange}/>
+            <input type="radio" name="contact" value="Email"  onChange={this.handleChange}/>
             contact phone number
           </div>
 
@@ -157,4 +188,4 @@ class ItemForm extends Component {
   }
 }
 
-export default ItemForm;
+export default withUser(ItemForm);

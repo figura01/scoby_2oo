@@ -1,5 +1,6 @@
 import React from "react";
 import ReactMapboxGl, { Layer, Feature } from 'react-mapbox-gl';
+import API from "../api/apiHandler";
 
 const Map = ReactMapboxGl({
   accessToken:
@@ -11,15 +12,15 @@ class Home extends React.Component {
     super(props)
     this.state={
       map : null,
+      items: []
     }
   }
 
-// componentDidMount(){
-  
-// this.setState({
-//   map: Map
-// })
-// }
+componentDidMount(){
+  API.getItems("/api/items")
+  .then(dbRes => {console.log(dbRes); this.setState({items : dbRes})})
+    .catch(error => console.log(error))
+}
 
   render() {
     return (
@@ -31,6 +32,14 @@ class Home extends React.Component {
     width: '100vw'
   }}
 >
+{/* {this.state.items.map((item, index) => {
+  console.log(item); return ( 
+  <Layer key={index} type="symbol" id={`marker-${index}`} layout={{ 'icon-image': 'marker-15' }}>
+    <Feature coordinates={item.location.coordinates} />
+  </Layer>)})} */}
+
+
+
   <Layer type="symbol" id="marker" layout={{ 'icon-image': 'marker-15' }}>
     <Feature coordinates={[-0.481747846041145, 51.3233379650232]} />
   </Layer>
