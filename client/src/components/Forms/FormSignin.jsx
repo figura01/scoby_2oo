@@ -30,7 +30,7 @@ class FormSignin extends Component {
       .signin(this.state)
       .then((data) => {
         authContext.setUser(data);
-        this.props.history.push("/");
+
       })
       .catch((error) => {
         console.log(error);
@@ -91,4 +91,4 @@ class FormSignin extends Component {
   }
 }
 
-export default withRouter(withUser(FormSignin));
+export default withUser(FormSignin);

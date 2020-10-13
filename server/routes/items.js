@@ -10,6 +10,7 @@ router.post("/api/items", async (req, res, next) => {
     const newItemId = newItem._id;
     const reqBodyWithId = { ...req.body, item_id: newItemId };
     const newContact = await Contact.create(reqBodyWithId);
+    res.status(200).json(newContact);
   } catch (error) {
     next(error);
   }
